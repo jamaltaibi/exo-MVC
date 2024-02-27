@@ -15,24 +15,34 @@ class Bdd{
 
     function readAll(){
         $sql = "SELECT * FROM `Taches`";
-        $request = $this->connexion->query($sql);
+        $request = $this->connexion->prepare($sql);
+        $request->execute();
         return $request->fetchAll(PDO::FETCH_ASSOC);
     }
 
     function insertBdd($param1){
-        $sql = "INSERT INTO `Taches`(`tache`) VALUES ('$param1')";
-        $this->connexion->query($sql);
+        $sql = "INSERT INTO `Taches`(`tache`) VALUES (:tache)";
+        $stmtinsert = $this->connexion->prepare($sql);
+        $stmtinsert->bindParam(':tache', $param1);
+        $stmtinsert->execute();
         echo "data bien ajouté à la bdd";
     }
 
-    function suppBdd(){
-        $sql = "DELETE FROM `Taches` WHERE `id`= ?";
-        $this->connexion->query($sql);
+    function modifBdd($idTache, $nouvelleTache){
+        $sql = "UPDATE `Taches` SET `tache` = :nouvelleTache WHERE `id` = :idTache";
+        $stmt = $this->connexion->prepare($sql);
+        $stmt->bindParam(':nouvelleTache', $nouvelleTache);
+        $stmt->bindParam(':idTache', $idTache);
+        $stmt->execute();
+    }
+
+    function suppBdd($suppTache){
+        $sqlSup = "DELETE FROM `Taches` WHERE id = :idTache";
+        $stmtSup = $this->connexion->prepare($sqlSup);
+        $stmtSup->bindParam(':idTache', $suppTache);
+        $stmtSup->execute();
+
         echo "data Supprimer";
     }
-
     }
-
-
-
 ?>
