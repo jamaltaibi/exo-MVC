@@ -7,7 +7,7 @@
             <th>Modification</th>
             <th>Supprimer</th>
         </tr>
-        <?php
+    <?php
 
         $conn = new Bdd;
         $data = $conn->readAll();
@@ -32,5 +32,5 @@
                 </td>";
             echo "</tr>"; 
         }
-        ?>
+    ?>
     </table>
